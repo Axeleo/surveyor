@@ -1,29 +1,37 @@
 require 'spec_helper'
+require 'pry'
 
 RSpec.describe '00: Respondent Answers' do
   class Response
     def self.count(responses)
-      # your code goes here
+      responses.count
     end
 
     def self.for(responses, user)
-      # your code goes here
+      responses.find { |res| res[:user] == user } 
     end
 
     def self.present?(responses, user)
-      # your code goes here
+      # converting expression to boolean
+      !!self.for(responses, user)
     end
 
     def self.positive(responses)
-      # your code goes here
+      awnser_threshold = 3
+      response_over_threshold = responses.select { |res| res[:answer] > awnser_threshold }
+      response_over_threshold.count
     end
 
     def self.negative(responses)
-      # your code goes here
+      awnser_threshold = 3
+      response_under_threshold = responses.select { |res| res[:answer] < awnser_threshold }
+      response_under_threshold.count
     end
 
     def self.average(responses)
-      # your codes goes here
+      total_res_score = 0
+      responses.each { |res| total_res_score += res[:answer] }
+      total_res_score / responses.count.to_f
     end
   end
 

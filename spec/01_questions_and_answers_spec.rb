@@ -4,7 +4,6 @@ RSpec.describe '01: Questions and Answers' do
   class Response
     def self.find_response(responses, user)
       response = responses.find { |res| res[:user] == user }
-      # check to see if user exists
       if !response
         puts "user #{user} not found"
       else
@@ -25,7 +24,7 @@ RSpec.describe '01: Questions and Answers' do
       if !response
         puts "user #{user} not found"
       else
-        !!response[:answers][question]
+        !response[:answers][question].nil?
       end 
     end
 

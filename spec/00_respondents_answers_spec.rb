@@ -8,11 +8,11 @@ RSpec.describe '00: Respondent Answers' do
     end
 
     def self.for(responses, user)
-      responses.find { |res| res[:user] == user } 
+      responses.find { |res| res[:user] == user }
     end
 
     def self.present?(responses, user)
-      # converting expression to boolean
+      # Rubo Cop says to use !expresion.nil? instead, but that causes unwanted results.
       !!self.for(responses, user)
     end
 

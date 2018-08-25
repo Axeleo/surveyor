@@ -1,5 +1,8 @@
 module Surveyor
   class Response
-    # your code goes here
+    attr_reader :answers
+    def initialize(details)
+      @answers = details[:answers] || []
+    end
   end
 end

@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'surveyor'
 
 RSpec.describe Surveyor::Answer, '03: Answer validations' do
   # The code for this test lives in lib/surveyor/answer.rb

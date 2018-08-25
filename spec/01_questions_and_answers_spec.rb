@@ -2,24 +2,61 @@ require 'spec_helper'
 
 RSpec.describe '01: Questions and Answers' do
   class Response
+    def self.find_response(responses, user)
+      response = responses.find { |res| res[:user] == user }
+      # check to see if user exists
+      if !response
+        puts "user #{user} not found"
+      else
+        response
+      end
+    end
+
+    def self.find_answer_set(responses, question)
+      answer_set = []
+      responses.map do |res|
+        answer_set.push(res[:answers][question]) if !!res[:answers][question]
+      end
+      answer_set
+    end
+
     def self.answered?(responses, user, question)
-      # your code goes here
+      response = find_response(responses, user)
+      if !response
+        puts "user #{user} not found"
+      else
+        !!response[:answers][question]
+      end 
     end
 
     def self.answer_for_question_by_user(responses, question, user)
-      # your code goes here
+      response = find_response(responses, user)
+      if !response
+        puts "user #{user} not found"
+      else
+        response[:answers][question]
+      end
     end
 
     def self.question_average(responses, question)
-      # your code goes here
+      answer_set = find_answer_set(responses, question)
+      average = answer_set.sum / answer_set.count.to_f
+      average.round(2)
     end
 
     def self.question_participation_percentage(responses, question)
-      # your code goes here
+      answer_set = find_answer_set(responses, question)
+      percentage =  answer_set.count.to_f / responses.count * 100
+      percentage.round(2)
     end
 
     def self.overall_participation_percentage(responses)
-      # your code goes here
+      total_num_participants = 0
+      responses.each do |res|
+        total_num_participants += 1 unless res[:answers].empty?
+      end
+      percentage = total_num_participants.to_f / responses.count * 100
+      percentage.round(2)
     end
   end
 

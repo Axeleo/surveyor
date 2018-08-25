@@ -1,5 +1,10 @@
 module Surveyor
   class Question
-    # your code goes here
+    attr_reader :title, :type
+
+    def initialize(details)
+      @title = details[:title]
+      @type = details[:type]
+    end
   end
 end

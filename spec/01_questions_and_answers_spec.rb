@@ -14,7 +14,7 @@ RSpec.describe '01: Questions and Answers' do
     def self.find_answer_set(responses, question)
       answer_set = []
       responses.map do |res|
-        answer_set.push(res[:answers][question]) if !!res[:answers][question]
+        answer_set.push(res[:answers][question]) unless res[:answers][question].nil?
       end
       answer_set
     end
@@ -25,16 +25,23 @@ RSpec.describe '01: Questions and Answers' do
         puts "user #{user} not found"
       else
         !response[:answers][question].nil?
-      end 
+      end
     end
 
     def self.answer_for_question_by_user(responses, question, user)
       response = find_response(responses, user)
+      # I feel like this conditional should be refactored into a seperate method as i'm using small variations of it multiple times. Unsure of how to achieve this, error handling?
       if !response
         puts "user #{user} not found"
       else
         response[:answers][question]
       end
+    end
+
+    # I feel like this method should be inside a mixin/helper
+    def self.get_percentage_round_2(part, whole)
+      percentage =  part.to_f / whole * 100
+      percentage.round(2)
     end
 
     def self.question_average(responses, question)
@@ -45,8 +52,7 @@ RSpec.describe '01: Questions and Answers' do
 
     def self.question_participation_percentage(responses, question)
       answer_set = find_answer_set(responses, question)
-      percentage =  answer_set.count.to_f / responses.count * 100
-      percentage.round(2)
+      get_percentage_round_2(answer_set.count, responses.count)
     end
 
     def self.overall_participation_percentage(responses)
@@ -54,8 +60,7 @@ RSpec.describe '01: Questions and Answers' do
       responses.each do |res|
         total_num_participants += 1 unless res[:answers].empty?
       end
-      percentage = total_num_participants.to_f / responses.count * 100
-      percentage.round(2)
+      get_percentage_round_2(total_num_participants, responses.count)
     end
   end
 

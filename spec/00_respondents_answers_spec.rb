@@ -12,8 +12,7 @@ RSpec.describe '00: Respondent Answers' do
     end
 
     def self.present?(responses, user)
-      # Rubo Cop says to use !expresion.nil? instead, but that causes unwanted results.
-      !!self.for(responses, user)
+      !self.for(responses, user).nil?
     end
 
     def self.positive(responses)

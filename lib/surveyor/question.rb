@@ -1,10 +1,10 @@
 module Surveyor
   class Question
-    attr_reader :title, :type
+    attr_accessor :title, :type
 
-    def initialize(details)
-      @title = details[:title]
-      @type = details[:type]
+    def initialize(title:, type:)
+      @title = title
+      @type = type
     end
   end
 end

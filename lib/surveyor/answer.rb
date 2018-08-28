@@ -1,22 +1,16 @@
+require 'pry'
 module Surveyor
   class Answer
     attr_reader :question, :value
 
-    def initialize(details)
-      @question = details[:question]
-      @value = details[:value]
+    def initialize(question: nil, value:)
+      @question = question
+      @value = value
     end
 
     def valid?
-      if !@question.nil?
-        if @value.to_i <= 5 && @value.to_i >= 1 || @value.to_i.zero?
-          true
-        else
-          false
-        end
-      else
-        false
-      end
+      return false if @question.nil?
+      (1..5).cover?(@value) || @value.to_i.zero?
     end
   end
 end

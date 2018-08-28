@@ -3,6 +3,8 @@ require 'pry'
 
 RSpec.describe '00: Respondent Answers' do
   class Response
+    ANSWER_THRESHOLD = 3
+
     def self.count(responses)
       responses.count
     end
@@ -16,21 +18,16 @@ RSpec.describe '00: Respondent Answers' do
     end
 
     def self.positive(responses)
-      awnser_threshold = 3
-      response_over_threshold = responses.select { |res| res[:answer] > awnser_threshold }
-      response_over_threshold.count
+      responses.count { |res| res[:answer] > ANSWER_THRESHOLD }
     end
 
     def self.negative(responses)
-      awnser_threshold = 3
-      response_under_threshold = responses.select { |res| res[:answer] < awnser_threshold }
-      response_under_threshold.count
+      responses.count { |res| res[:answer] < ANSWER_THRESHOLD }
     end
 
     def self.average(responses)
-      total_res_score = 0
-      responses.each { |res| total_res_score += res[:answer] }
-      total_res_score / responses.count.to_f
+      total = responses.sum { |res| res[:answer] }
+      total / responses.count.to_f
     end
   end
 

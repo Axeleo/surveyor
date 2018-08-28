@@ -3,38 +3,29 @@ require 'spec_helper'
 RSpec.describe '01: Questions and Answers' do
   class Response
     def self.find_response(responses, user)
-      response = responses.find { |res| res[:user] == user }
-      if !response
-        puts "user #{user} not found"
-      else
-        response
-      end
+      responses.find { |res| res[:user] == user }
     end
 
     def self.find_answer_set(responses, question)
-      answer_set = []
-      responses.map do |res|
-        answer_set.push(res[:answers][question]) unless res[:answers][question].nil?
-      end
-      answer_set
+      responses.map { |response| response.dig(:answers, question) }.compact
     end
 
     def self.answered?(responses, user, question)
       response = find_response(responses, user)
-      if !response
-        puts "user #{user} not found"
+      if response
+        !response[:answers][question].nil? 
       else
-        !response[:answers][question].nil?
+        puts "user #{user} not found"
       end
     end
 
     def self.answer_for_question_by_user(responses, question, user)
       response = find_response(responses, user)
       # I feel like this conditional should be refactored into a seperate method as i'm using small variations of it multiple times. Unsure of how to achieve this, error handling?
-      if !response
-        puts "user #{user} not found"
-      else
+      if response
         response[:answers][question]
+      else
+        puts "user #{user} not found"
       end
     end
 
@@ -56,10 +47,7 @@ RSpec.describe '01: Questions and Answers' do
     end
 
     def self.overall_participation_percentage(responses)
-      total_num_participants = 0
-      responses.each do |res|
-        total_num_participants += 1 unless res[:answers].empty?
-      end
+      total_num_participants = responses.count { |res| res[:answers].any? }
       get_percentage_round_2(total_num_participants, responses.count)
     end
   end
